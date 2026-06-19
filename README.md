@@ -127,3 +127,5 @@ These helpers are not currently exposed through an npm script. If a refresh scri
 - UI changes should stay inside `app/components` unless page-level layout changes are required.
 - Predictor behavior lives in `app/api/getHighData.ts`, `app/api/getModerateData.ts`, `app/api/getLowData.ts`, and `app/api/predictor.ts`.
 - Keep environment values out of commits.
+
+## 
