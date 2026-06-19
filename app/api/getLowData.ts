@@ -43,7 +43,7 @@ const getLowData = async (userdata: UserInputs, predicted_advanced_data_high: Co
     mains = data.filter((row: CollegePrediction) => {
         return !predicted_mains_data_high.some(highRow =>
             highRow.id === row.id 
-        ) ||
+        ) &&
         !predicted_mains_data_moderate.some(modRow =>
             modRow.id === row.id 
         );
