@@ -14,6 +14,7 @@ const getLowData = async (userdata: UserInputs, predicted_advanced_data_high: Co
             .select("*")
             .eq("seat_type", userdata.category)
             .eq("college_type", "IIT")
+            .eq("gender", userdata.gender)
             .gte("closing_rank", userdata.advanced_category_rank - 200)
             .lte("opening_rank", userdata.advanced_category_rank + 200);
         if (error) throw error;
@@ -33,6 +34,7 @@ const getLowData = async (userdata: UserInputs, predicted_advanced_data_high: Co
         .from("cutoffs")
         .select('*')
         .eq("seat_type", userdata.category)
+        .eq("gender", userdata.gender)
         .neq("college_type", "IIT")
         .gt("closing_rank", userdata.mains_category_rank-200)
         .lt("opening_rank", userdata.mains_category_rank-200);

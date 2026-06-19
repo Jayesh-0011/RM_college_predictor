@@ -7,12 +7,13 @@ const getModerateData = async (userdata: UserInputs, predicted_advanced_data_hig
     const supabase = createClient();
     let mains: CollegePrediction[] = [];
     let advanced: CollegePrediction[] = [];
-
+    console.log(userdata.gender);
     if (userdata.advanced_rank) {
         const { data, error } = await supabase
             .from("cutoffs")
             .select("*")
             .eq("seat_type", userdata.category)
+            .eq("gender", userdata.gender)
             .eq("college_type", "IIT")
             .gte("closing_rank", userdata.advanced_category_rank - 100)
             .lte("opening_rank", userdata.advanced_category_rank + 100);
@@ -30,9 +31,10 @@ const getModerateData = async (userdata: UserInputs, predicted_advanced_data_hig
         .from("cutoffs")
         .select('*')
         .eq("seat_type", userdata.category)
+        .eq("gender", userdata.gender)
         .neq("college_type", "IIT")
-        .gt("closing_rank", userdata.mains_category_rank-100)
-        .lt("opening_rank", userdata.mains_category_rank+100);
+        .gte("closing_rank", userdata.mains_category_rank-100)
+        .lte("opening_rank", userdata.mains_category_rank+100);
     if (error) throw error;
 
     mains = data.filter((row: CollegePrediction) => {

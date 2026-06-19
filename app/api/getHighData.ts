@@ -14,6 +14,7 @@ const getHighData = async (userdata: UserInputs) => {
             .select("*")
             .eq("seat_type", userdata.category)
             .eq("college_type", "IIT")
+            .eq("gender", userdata.gender)
             .gte("closing_rank", userdata.advanced_category_rank)
             .lte("opening_rank", userdata.advanced_category_rank);
         if (error) throw error;
@@ -24,6 +25,7 @@ const getHighData = async (userdata: UserInputs) => {
         .from("cutoffs")
         .select('*')
         .eq("seat_type", userdata.category)
+        .eq("gender ", userdata.gender)
         .neq("college_type", "IIT")
         .gte("closing_rank", userdata.mains_category_rank)
         .lte("opening_rank", userdata.mains_category_rank);
