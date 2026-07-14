@@ -4,6 +4,8 @@ import type { UserInputs, Category, Gender } from "../../lib/variables";
 import type { CollegePrediction } from "../../lib/types";
 import predictor from "../api/predictor";
 import ResultsTable from "./resultsTable";
+import states from "@/lib/indianStates.json";
+import { useStateStore } from "../store/stateFilter";
 
 const categories: Category[] = [
     "OPEN",
@@ -40,6 +42,7 @@ export default function UserInputForm() {
     const [results_moderate, setResults_moderate] = useState<CollegePrediction[]>([]);
     const [results_low, setResults_low] = useState<CollegePrediction[]>([]);
     const [isSubmitting, setIsSubmitting] = useState(false);
+    const {selectedStates} = useStateStore()
 
     const [formData, setFormData] = useState<UserInputs>({
         advanced_rank: 0,
@@ -48,6 +51,7 @@ export default function UserInputForm() {
         mains_category_rank: 0,
         category: "OPEN",
         gender: "Gender-Neutral",
+        home_domicile: "",
     });
 
     const handleCategoryChange = (category: Category) => {
@@ -76,7 +80,7 @@ export default function UserInputForm() {
 
         setIsSubmitting(true);
         try {
-            const { data } = await predictor(payload);
+            const { data } = await predictor(payload, selectedStates);
             setResults_high([
                 ...(data.predicted_mains_data?.high ?? []),
                 ...(data.predicted_advanced_data?.high ?? []),
@@ -251,43 +255,82 @@ export default function UserInputForm() {
                         <p className="font-['Inter'] text-[11px] font-semibold uppercase tracking-[0.2em] text-[#14213D]">
                             Your profile
                         </p>
-                        <div className="mt-4 grid gap-4">
-                            <div>
-                                <label className={labelClass}>Category</label>
-                                <div className="relative">
-                                    <select
-                                        value={formData.category}
-                                        onChange={(e) => {
-                                            setFormData((prev) => ({
-                                                ...prev,
-                                                category: e.target.value as Category,
-                                            }))
-                                            handleCategoryChange(e.target.value as Category);
-                                            // e.target.value === "OPEN" ? setCatDisabled(true) : setCatDisabled(false);
-                                        }
-                                        }
-                                        className={selectClass}
-                                    >
-                                        {categories.map((category) => (
-                                            <option key={category} value={category}>
-                                                {category}
-                                            </option>
-                                        ))}
-                                    </select>
-                                    <svg
-                                        className="pointer-events-none absolute right-4 top-1/2 h-4 w-4 -translate-y-1/2 text-[#786F5E]"
-                                        viewBox="0 0 20 20"
-                                        fill="none"
-                                    >
-                                        <path
-                                            d="M5 7.5L10 12.5L15 7.5"
-                                            stroke="currentColor"
-                                            strokeWidth="1.6"
-                                            strokeLinecap="round"
-                                            strokeLinejoin="round"
-                                        />
-                                    </svg>
+                        <div className="mt-4 grid gap-4 ">
+                            <div className="flex gap-50">
+                                <div>
+                                    <label className={labelClass}>Category</label>
+                                    <div className="relative">
+                                        <select
+                                            value={formData.category}
+                                            onChange={(e) => {
+                                                setFormData((prev) => ({
+                                                    ...prev,
+                                                    category: e.target.value as Category,
+                                                }))
+                                                handleCategoryChange(e.target.value as Category);
+                                                // e.target.value === "OPEN" ? setCatDisabled(true) : setCatDisabled(false);
+                                            }
+                                            }
+                                            className={selectClass}
+                                        >
+                                            {categories.map((category) => (
+                                                <option key={category} value={category}>
+                                                    {category}
+                                                </option>
+                                            ))}
+                                        </select>
+                                        <svg
+                                            className="pointer-events-none absolute right-4 top-1/2 h-4 w-4 -translate-y-1/2 text-[#786F5E]"
+                                            viewBox="0 0 20 20"
+                                            fill="none"
+                                        >
+                                            <path
+                                                d="M5 7.5L10 12.5L15 7.5"
+                                                stroke="currentColor"
+                                                strokeWidth="1.6"
+                                                strokeLinecap="round"
+                                                strokeLinejoin="round"
+                                            />
+                                        </svg>
+                                    </div>
                                 </div>
+
+                                <div>
+                                    <label className={labelClass}>Home Domincile</label>
+                                    <div className="relative">
+                                        <select
+                                            value={formData.home_domicile}
+                                            onChange={(e) => {
+                                                setFormData((prev) => ({
+                                                    ...prev,
+                                                    home_domicile: e.target.value,
+                                                }))
+
+                                            }}
+                                            className={selectClass}
+                                        >
+                                            {states.map((state) => (
+                                                <option key={state.label} value={state.value}>
+                                                    {state.value}
+                                                </option>
+                                            ))}
+                                        </select>
+                                        <svg
+                                            className="pointer-events-none absolute right-4 top-1/2 h-4 w-4 -translate-y-1/2 text-[#786F5E]"
+                                            viewBox="0 0 20 20"
+                                            fill="none"
+                                        >
+                                            <path
+                                                d="M5 7.5L10 12.5L15 7.5"
+                                                stroke="currentColor"
+                                                strokeWidth="1.6"
+                                                strokeLinecap="round"
+                                                strokeLinejoin="round"
+                                            />
+                                        </svg>
+                                    </div>
+                                </div>
+
                             </div>
 
                             <div>
@@ -310,6 +353,7 @@ export default function UserInputForm() {
                                     ))}
                                 </div>
                             </div>
+
                         </div>
                     </div>
 

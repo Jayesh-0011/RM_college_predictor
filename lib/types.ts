@@ -15,5 +15,6 @@ export interface CollegePrediction {
     quota: string;
     seat_type: string;
     gender: string;
+    state: string;
     created_at: string;
 }

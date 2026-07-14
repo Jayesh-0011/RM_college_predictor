@@ -27,6 +27,7 @@ export interface UserInputs {
   mains_category_rank: number ;
   category: Category;
   gender: Gender;
+  home_domicile: string;
 }
 
 export type Category =

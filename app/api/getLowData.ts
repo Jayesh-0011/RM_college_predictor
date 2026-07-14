@@ -15,8 +15,8 @@ const getLowData = async (userdata: UserInputs, predicted_advanced_data_high: Co
             .eq("seat_type", userdata.category)
             .eq("college_type", "IIT")
             .eq("gender", userdata.gender)
-            .gte("closing_rank", userdata.advanced_category_rank - 200)
-            .lte("opening_rank", userdata.advanced_category_rank + 200);
+            .gte("closing_rank", userdata.advanced_category_rank - 1000)
+            .lte("opening_rank", userdata.advanced_category_rank + 1000);
         if (error) throw error;
 
         advanced = data.filter((row: CollegePrediction ) =>
@@ -36,8 +36,8 @@ const getLowData = async (userdata: UserInputs, predicted_advanced_data_high: Co
         .eq("seat_type", userdata.category)
         .eq("gender", userdata.gender)
         .neq("college_type", "IIT")
-        .gt("closing_rank", userdata.mains_category_rank-200)
-        .lt("opening_rank", userdata.mains_category_rank-200);
+        .gt("closing_rank", userdata.mains_category_rank-1000)
+        .lt("opening_rank", userdata.mains_category_rank-1000);
     if (error) throw error;
 
     mains = data.filter((row: CollegePrediction) => {

@@ -33,15 +33,15 @@ const getModerateData = async (userdata: UserInputs, predicted_advanced_data_hig
         .eq("seat_type", userdata.category)
         .eq("gender", userdata.gender)
         .neq("college_type", "IIT")
-        .gte("closing_rank", userdata.mains_category_rank-100)
-        .lte("opening_rank", userdata.mains_category_rank+100);
+        .gte("closing_rank", userdata.mains_category_rank-500)
+        .lte("opening_rank", userdata.mains_category_rank+500);
     if (error) throw error;
 
     mains = data.filter((row: CollegePrediction) => {
         return !predicted_mains_data_high.some(highRow =>
             highRow.id === row.id   
         );
-    });
+    });    
 
     return { data1 : { mains, advanced } };
 };
